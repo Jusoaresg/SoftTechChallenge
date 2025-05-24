@@ -1,5 +1,6 @@
 package br.com.fiap.fineduca.screens
 
+import HomeViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,9 +19,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,8 +34,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
     Column(modifier = Modifier
@@ -39,6 +47,9 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
         val primaryColor = Color(0xFF4F46E5)
         val warningColor = Color(0xFFFFD700)
         val backgroundColor = Color(0xFFE6EDFF)
+
+        val homeViewModel: HomeViewModel = viewModel()
+        val dataHora by homeViewModel.dataHora.collectAsState()
 
         Column(
             modifier = Modifier
@@ -56,7 +67,12 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
                 ) {
                     //Icon(Icons.Default.CalendarToday, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Segunda, 17 de Agosto 2025", fontWeight = FontWeight.Bold)
+                    //Text("Segunda, 17 de Agosto 2025", fontWeight = FontWeight.Bold)
+                    TextField(value = dataHora, onValueChange = {}, readOnly = true)
+
+                    LaunchedEffect(Unit) {
+                        homeViewModel.loadTime()
+                    }
                 }
             }
 
