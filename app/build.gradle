@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'br.com.fiap.softtech'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "br.com.fiap.softtech"
@@ -69,4 +69,6 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

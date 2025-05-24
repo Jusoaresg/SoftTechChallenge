@@ -28,7 +28,7 @@ fun QuestionarioScreen(modifier: Modifier = Modifier, navController: NavControll
             .fillMaxSize()
             .verticalScroll(scrollState)
             .padding(16.dp)
-            .background(Color(0xFFE8F0FF)), // azul claro
+            .background(Color(0xFFE8F0FF)),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(

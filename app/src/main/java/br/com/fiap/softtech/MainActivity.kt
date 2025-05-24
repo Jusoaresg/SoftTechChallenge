@@ -3,29 +3,19 @@ package br.com.fiap.softtech
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.fiap.fineduca.screens.ApoioScreen
 import br.com.fiap.fineduca.screens.BaseScreen
+import br.com.fiap.fineduca.screens.DicasScreen
 import br.com.fiap.fineduca.screens.HomeScreen
 import br.com.fiap.fineduca.screens.QuestionarioScreen
 import br.com.fiap.softtech.content.BottomNavigationBar
+import br.com.fiap.softtech.screens.EvolucaoScreen
 import br.com.fiap.softtech.ui.theme.SoftTechTheme
 
 class MainActivity : ComponentActivity() {
@@ -56,6 +46,31 @@ class MainActivity : ComponentActivity() {
                             QuestionarioScreen(navController = navController)
                         }
                     }
+                    
+                    composable("apoio") {
+                        BaseScreen(modifier = Modifier.fillMaxSize(), bottomBar = bottomBar) {
+                            ApoioScreen(navController = navController)
+                        }
+                    }
+
+                    composable("evolucao") {
+                        BaseScreen(modifier = Modifier.fillMaxSize(), bottomBar = bottomBar) {
+                            EvolucaoScreen(navController = navController)
+                        }
+                    }
+                    
+                    composable("dicas") {
+                        BaseScreen(modifier = Modifier.fillMaxSize(), bottomBar = bottomBar) { 
+                            DicasScreen(navController = navController)
+                        }
+                    }
+
+                    /*composable("evolucao") {
+                        BaseScreen(modifier = Modifier.fillMaxSize(), bottomBar = bottomBar) {
+                            DicasScreen(navController = navController)
+                        }
+                    }
+                     */
                 }
 
 
