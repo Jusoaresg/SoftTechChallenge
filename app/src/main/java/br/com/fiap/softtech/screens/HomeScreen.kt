@@ -105,7 +105,7 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Button(
-                            onClick = { /* ação para "Vamos lá!" */ },
+                            onClick = { navController.navigate("questionario") },
                             colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
                         ) {
                             Text("Vamos lá!")
