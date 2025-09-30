@@ -1,4 +1,4 @@
-package br.com.fiap.fineduca.screens
+package br.com.fiap.softtech.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,57 +13,94 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import br.com.fiap.softtech.database.SaudeRepository
+import br.com.fiap.softtech.viewmodel.QuestionarioViewModelFactory
+import br.com.fiap.softtech.viewmodels.QuestionarioViewModel
 
 @Composable
 fun QuestionarioScreen(modifier: Modifier = Modifier, navController: NavController) {
-    var resposta1 by remember { mutableStateOf("Ansioso") }
-    var resposta2 by remember { mutableStateOf("Disposto") }
-    var resposta3 by remember { mutableStateOf("7-9h") }
+    // Instancia o ViewModel de forma correta, passando o repositório
+    val repositorio = remember { SaudeRepository() }
+    val viewModel: QuestionarioViewModel = viewModel(factory = QuestionarioViewModelFactory(repositorio))
 
+    // Coleta o estado da UI a partir do ViewModel
+    val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
 
-    Column(
-        modifier = Modifier
+    // Efeito para navegar para trás quando o envio for concluído
+    LaunchedEffect(uiState.envioConcluido) {
+        if (uiState.envioConcluido) {
+            navController.popBackStack()
+        }
+    }
+
+    Box(
+        modifier = modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(16.dp)
             .background(Color(0xFFE8F0FF)),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "Humor Diário",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
+        if (uiState.carregando) {
+            CircularProgressIndicator()
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    text = "Questionário Diário",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
 
-        PerguntaCard(
-            numero = "1",
-            texto = "Como você se definiria hoje?",
-            opcoes = listOf("Animado!", "Ansioso", "Triste", "Calmo", "Feliz"),
-            selecionado = resposta1,
-            aoSelecionar = { resposta1 = it }
-        )
+                // Loop para criar um Card para cada pergunta vinda do banco
+                uiState.perguntas.forEach { pergunta ->
+                    // As opções são as mesmas para todas as perguntas
+                    val opcoes = viewModel.opcoesDeResposta.keys.toList()
+                    val idDaPergunta = pergunta.id.toString()
+                    val valorSelecionado = uiState.respostasSelecionadas[idDaPergunta]
 
-        PerguntaCard(
-            numero = "2",
-            texto = "Como você se sentiu ao acordar?",
-            opcoes = listOf("Disposto", "Indisposto"),
-            selecionado = resposta2,
-            aoSelecionar = { resposta2 = it }
-        )
+                    // Converte o valor numérico de volta para o texto da opção para o RadioButton
+                    val textoSelecionado = viewModel.opcoesDeResposta.entries
+                        .find { it.value == valorSelecionado }?.key ?: ""
 
-        PerguntaCard(
-            numero = "3",
-            texto = "Quantas horas de sono você teve?",
-            opcoes = listOf("7-9h", "4-7h", "Menos de 4h", "Mais de 9h"),
-            selecionado = resposta3,
-            aoSelecionar = { resposta3 = it }
-        )
+                    PerguntaCard(
+                        numero = pergunta.order.toString(),
+                        texto = pergunta.text,
+                        opcoes = opcoes,
+                        selecionado = textoSelecionado,
+                        aoSelecionar = { opcaoSelecionada ->
+                            viewModel.onRespostaSelecionada(idDaPergunta, opcaoSelecionada)
+                        }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Button(
+                    onClick = { viewModel.salvarRespostas() },
+                    enabled = uiState.podeEnviar, // Botão só é clicável quando todas as perguntas forem respondidas
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("SALVAR RESPOSTAS")
+                }
+
+                // Exibe mensagem de erro, se houver
+                uiState.erro?.let {
+                    Text(text = it, color = MaterialTheme.colorScheme.error, modifier = Modifier.align(Alignment.CenterHorizontally))
+                }
+            }
+        }
     }
 }
 
+// O Composable PerguntaCard continua exatamente o mesmo!
 @Composable
 fun PerguntaCard(
     numero: String,

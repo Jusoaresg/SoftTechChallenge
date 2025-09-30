@@ -13,7 +13,7 @@ import br.com.fiap.fineduca.screens.ApoioScreen
 import br.com.fiap.fineduca.screens.BaseScreen
 import br.com.fiap.fineduca.screens.DicasScreen
 import br.com.fiap.fineduca.screens.HomeScreen
-import br.com.fiap.fineduca.screens.QuestionarioScreen
+import br.com.fiap.softtech.screens.QuestionarioScreen
 import br.com.fiap.softtech.content.BottomNavigationBar
 import br.com.fiap.softtech.screens.EvolucaoScreen
 import br.com.fiap.softtech.ui.theme.SoftTechTheme
