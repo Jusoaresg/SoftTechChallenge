@@ -4,12 +4,11 @@ import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
 
 data class Resposta(
-    val questionId: String, // Armazenaremos o ID da pergunta como String
+    val questionId: String,
     val responseValue: Int
 )
-
-data class RespostaDiaria(
+data class RespostaMensal(
     @BsonId val id: ObjectId = ObjectId(),
-    val date: String, // Formato "YYYY-MM-DD"
+    val date: String, // Este campo armazena "AAAA-MM"
     val answers: List<Resposta>
 )

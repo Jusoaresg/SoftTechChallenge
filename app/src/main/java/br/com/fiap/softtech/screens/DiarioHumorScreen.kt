@@ -1,4 +1,4 @@
-package br.com.fiap.softtech.screens
+package br.com.fiap.fineduca.screens // ou br.com.fiap.softtech.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,19 +10,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.fiap.softtech.database.SaudeRepository
-import br.com.fiap.softtech.viewmodels.QuestionarioViewModel
-import br.com.fiap.softtech.viewmodel.QuestionarioViewModelFactory
+import br.com.fiap.softtech.screens.PerguntaCard
+import br.com.fiap.softtech.viewmodel.DiarioHumorViewModel
+import br.com.fiap.softtech.viewmodel.DiarioHumorViewModelFactory
 
 @Composable
-fun QuestionarioScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun DiarioHumorScreen(modifier: Modifier = Modifier, navController: NavController) {
     val repositorio = remember { SaudeRepository() }
-    val factory = remember { QuestionarioViewModelFactory(repositorio) }
-    val viewModel: QuestionarioViewModel = viewModel(factory = factory)
+    val factory = remember { DiarioHumorViewModelFactory(repositorio) }
+    val viewModel: DiarioHumorViewModel = viewModel(factory = factory)
 
     val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
@@ -41,6 +43,13 @@ fun QuestionarioScreen(modifier: Modifier = Modifier, navController: NavControll
     ) {
         if (uiState.carregando) {
             CircularProgressIndicator()
+        } else if (uiState.jaRespondeuHoje) {
+            Text(
+                text = "Você já registrou seu humor hoje!\nVolte amanhã.",
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(16.dp)
+            )
         } else {
             Column(
                 modifier = Modifier
@@ -50,48 +59,42 @@ fun QuestionarioScreen(modifier: Modifier = Modifier, navController: NavControll
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Questionário Diário",
+                    text = "Humor Diário",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
-                uiState.perguntas.forEach { pergunta ->
-                    val idDaPergunta = pergunta.id.toString()
-
-                    // --- MUDANÇA PRINCIPAL AQUI ---
-                    // Pega o mapa de opções correto para a pergunta atual
-                    val opcoesMap = viewModel.getOpcoesParaPergunta(pergunta)
-                    val opcoesTexto = opcoesMap.keys.toList()
-
-                    // Encontra o texto da opção selecionada com base no valor numérico salvo
-                    val valorSelecionado = uiState.respostasSelecionadas[idDaPergunta]
-                    val textoSelecionado = opcoesMap.entries
-                        .find { it.value == valorSelecionado }?.key ?: ""
-
+                // Pergunta 1
+                uiState.perguntas.getOrNull(0)?.let { pergunta ->
                     PerguntaCard(
-                        numero = pergunta.order.toString(),
+                        numero = "1",
                         texto = pergunta.text,
-                        opcoes = opcoesTexto,
-                        selecionado = textoSelecionado,
-                        aoSelecionar = { opcaoSelecionada ->
-                            // Pega o valor numérico correspondente e envia para o ViewModel
-                            val valor = opcoesMap[opcaoSelecionada]
-                            if (valor != null) {
-                                viewModel.onRespostaSelecionada(idDaPergunta, valor)
-                            }
-                        }
+                        opcoes = viewModel.opcoesHumor,
+                        selecionado = uiState.respostaHumor,
+                        aoSelecionar = { resposta -> viewModel.onRespostaSelecionada(pergunta.order, resposta) }
+                    )
+                }
+
+                // Pergunta 2
+                uiState.perguntas.getOrNull(1)?.let { pergunta ->
+                    PerguntaCard(
+                        numero = "2",
+                        texto = pergunta.text,
+                        opcoes = viewModel.opcoesTrabalho,
+                        selecionado = uiState.respostaTrabalho,
+                        aoSelecionar = { resposta -> viewModel.onRespostaSelecionada(pergunta.order, resposta) }
                     )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Button(
-                    onClick = { viewModel.salvarRespostas() },
+                    onClick = { viewModel.salvarHumor() },
                     enabled = uiState.podeEnviar,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("SALVAR RESPOSTAS")
+                    Text("SALVAR HUMOR")
                 }
 
                 uiState.erro?.let {
@@ -101,15 +104,5 @@ fun QuestionarioScreen(modifier: Modifier = Modifier, navController: NavControll
         }
     }
 }
-
-// O Composable PerguntaCard continua exatamente o mesmo
-@Composable
-fun PerguntaCard(
-    numero: String,
-    texto: String,
-    opcoes: List<String>,
-    selecionado: String,
-    aoSelecionar: (String) -> Unit
-) {
-    // ... (nenhuma mudança necessária aqui)
-}
+// NOTA: A sua função PerguntaCard() pode ser reutilizada aqui sem nenhuma alteração.
+// Certifique-se de que ela esteja acessível a partir deste arquivo.
