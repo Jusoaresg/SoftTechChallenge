@@ -9,7 +9,7 @@ import org.bson.codecs.configuration.CodecRegistries
 import org.bson.codecs.pojo.PojoCodecProvider
 
 object MongoDbManager {
-    private const val CONNECTION_STRING = "mongodb://localhost:27017"
+    private const val CONNECTION_STRING = "mongodb://192.168.10.15:27017"
     private const val DATABASE_NAME = "saude_mental_db"
 
     // Configuração para permitir que o driver MongoDB use nossas Data Classes

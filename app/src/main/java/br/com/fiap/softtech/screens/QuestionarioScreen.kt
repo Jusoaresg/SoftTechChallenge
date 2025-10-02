@@ -59,7 +59,6 @@ fun QuestionarioScreen(modifier: Modifier = Modifier, navController: NavControll
                 uiState.perguntas.forEach { pergunta ->
                     val idDaPergunta = pergunta.id.toString()
 
-                    // --- MUDANÇA PRINCIPAL AQUI ---
                     // Pega o mapa de opções correto para a pergunta atual
                     val opcoesMap = viewModel.getOpcoesParaPergunta(pergunta)
                     val opcoesTexto = opcoesMap.keys.toList()
@@ -111,5 +110,5 @@ fun PerguntaCard(
     selecionado: String,
     aoSelecionar: (String) -> Unit
 ) {
-    // ... (nenhuma mudança necessária aqui)
+
 }
