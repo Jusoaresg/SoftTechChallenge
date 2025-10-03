@@ -1,12 +1,12 @@
-Pré-requisitos Para executar este projeto, você precisará ter instalado:
+1) Pré-requisitos - Para executar este projeto, você precisará ter instalado:
 
-Android Studio (versão mais recente recomendada).
+- Android Studio (versão mais recente recomendada).
 
-Docker Desktop.
+- Docker Desktop.
 
-Instruções de Execução Siga estes passos para configurar e rodar a aplicação:
+2) Instruções de Execução Siga estes passos para configurar e rodar a aplicação:
 
-Passo 1: Iniciar o Banco de Dados MongoDB
+- Passo 1: Iniciar o Banco de Dados MongoDB
 
 O projeto utiliza uma instância local do MongoDB rodando em um container Docker. Para iniciá-la, abra seu terminal (PowerShell, CMD, ou Terminal do Mac/Linux) e execute o seguinte comando:
 
@@ -14,7 +14,7 @@ Bash
 
 docker run --name mongo-saude-mental -p 27017:27017 -d mongo Este comando irá baixar a imagem do MongoDB (se ainda não tiver) e iniciar um container chamado mongo-saude-mental. A porta 27017 ficará disponível para a aplicação se conectar.
 
-Passo 2: Abrir e Executar o Projeto no Android Studio
+- Passo 2: Abrir e Executar o Projeto no Android Studio
 
 Abra o Android Studio.
 
