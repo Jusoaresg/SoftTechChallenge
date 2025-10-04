@@ -14,6 +14,8 @@ Bash
 
 docker run --name mongo-saude-mental -p 27017:27017 -d mongo Este comando irá baixar a imagem do MongoDB (se ainda não tiver) e iniciar um container chamado mongo-saude-mental. A porta 27017 ficará disponível para a aplicação se conectar.
 
+ATENÇÃO, CASO HAJA UM ERRO DE EXECUÇÃO, VERIFIQUE O ARQUIVO "MongoDbManager" E MUDE O ENDEREÇO DE ACESSO DE "10.0.2.2:27017" para "SEU_ENDEREÇO_DE_IP:27017" QUE IRÁ FUNCIONAR A ATRAVÉS DO CONTEINER DOCKER
+
 - Passo 2: Abrir e Executar o Projeto no Android Studio
 
 Abra o Android Studio.
