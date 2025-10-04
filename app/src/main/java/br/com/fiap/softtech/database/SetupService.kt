@@ -8,7 +8,6 @@ import kotlinx.coroutines.runBlocking
 object SetupService {
     private val perguntasCollection = MongoDbManager.perguntasCollection
 
-    // Lista de perguntas passadas na planilha excel (AJUSTAR DE ACORDO)
     private val initialQuestions = listOf(
         Pergunta(text = "Como você avalia a sua carga de trabalho?", order = 1, tipo = TipoQuestionario.MENSAL),
         Pergunta(text = "Sua carga de trabalho afeta a sua qualidade de vida?", order = 2, tipo = TipoQuestionario.MENSAL),

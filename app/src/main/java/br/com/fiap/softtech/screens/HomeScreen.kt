@@ -1,4 +1,4 @@
-package br.com.fiap.fineduca.screens
+package br.com.fiap.softtech.screens
 
 import HomeViewModel
 import androidx.compose.foundation.background
@@ -65,9 +65,7 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
                     modifier = Modifier.padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    //Icon(Icons.Default.CalendarToday, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    //Text("Segunda, 17 de Agosto 2025", fontWeight = FontWeight.Bold)
                     TextField(value = dataHora, onValueChange = {}, readOnly = true)
 
                     LaunchedEffect(Unit) {
@@ -91,12 +89,15 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
                     Text("Humor Diário", fontWeight = FontWeight.Bold, fontSize = 20.sp)
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        "Como está se sentindo hoje?\nResponda a 5 questões rápidas para demonstrar como está se sentindo no dia de hoje",
+                        "Como está se sentindo hoje?\n Clique no botão abaixo e nos diga! ",
                         textAlign = TextAlign.Center,
                         fontSize = 14.sp
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
                         Button(
                             onClick = { /* ação para "Hoje Não" */ },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
@@ -105,7 +106,8 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Button(
-                            onClick = { navController.navigate("questionario") },
+                            // <-- CORREÇÃO AQUI: Navegando para a rota do Diário de Humor
+                            onClick = { navController.navigate("diario_humor") },
                             colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
                         ) {
                             Text("Vamos lá!")
@@ -137,7 +139,6 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
                 }
             }
         }
-
     }
 }
 

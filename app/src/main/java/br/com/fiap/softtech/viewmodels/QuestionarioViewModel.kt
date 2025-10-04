@@ -1,4 +1,4 @@
-package br.com.fiap.softtech.viewmodels
+package br.com.fiap.softtech.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// Data class para representar todo o estado da nossa tela
 data class QuestionarioUiState(
     val carregando: Boolean = true,
     val perguntas: List<Pergunta> = emptyList(),
-    val respostasSelecionadas: Map<String, Int> = emptyMap(), // Map<ID_da_Pergunta, Valor_da_Resposta>
+    val respostasSelecionadas: Map<String, Int> = emptyMap(),
     val podeEnviar: Boolean = false,
     val envioConcluido: Boolean = false,
-    val erro: String? = null
+    val erro: String? = null,
+    val jaRespondeuEsteMes: Boolean = false
 )
 
 class QuestionarioViewModel(private val repositorio: SaudeRepository) : ViewModel() {
@@ -26,36 +26,16 @@ class QuestionarioViewModel(private val repositorio: SaudeRepository) : ViewMode
     private val _uiState = MutableStateFlow(QuestionarioUiState())
     val uiState: StateFlow<QuestionarioUiState> = _uiState.asStateFlow()
 
-    // --- DEFINIÇÃO DOS 3 TIPOS DE RESPOSTAS PARA O QUESTIONÁRIO MENSAL ---
-
-    // Mapeamento para a pergunta 1
     private val opcoesCargaTrabalho = mapOf(
-        "Muito Leve" to 1,
-        "Leve" to 2,
-        "Média" to 3,
-        "Alta" to 4,
-        "Muito Alta" to 5
+        "Muito Leve" to 1, "Leve" to 2, "Média" to 3, "Alta" to 4, "Muito Alta" to 5
     )
-
-    // Mapeamento para as perguntas 2 a 5
     private val opcoesFrequencia = mapOf(
-        "Não" to 1,
-        "Raramente" to 2,
-        "Às vezes" to 3,
-        "Frequentemente" to 4,
-        "Sempre" to 5
+        "Não" to 1, "Raramente" to 2, "Às vezes" to 3, "Frequentemente" to 4, "Sempre" to 5
     )
-
-    // Mapeamento para as perguntas 6 a 12 (escala de 1 a 5)
     private val opcoesEscalaNumerica = mapOf(
-        "1" to 1,
-        "2" to 2,
-        "3" to 3,
-        "4" to 4,
-        "5" to 5
+        "1" to 1, "2" to 2, "3" to 3, "4" to 4, "5" to 5
     )
 
-    // Função pública para a UI buscar as opções corretas para cada pergunta
     fun getOpcoesParaPergunta(pergunta: Pergunta): Map<String, Int> {
         return when (pergunta.order) {
             1 -> opcoesCargaTrabalho
@@ -64,21 +44,25 @@ class QuestionarioViewModel(private val repositorio: SaudeRepository) : ViewMode
             else -> emptyMap()
         }
     }
-    // --- FIM DA DEFINIÇÃO DAS RESPOSTAS ---
 
     init {
-        carregarPerguntas()
+        carregarDadosIniciais()
     }
 
-    private fun carregarPerguntas() {
+    private fun carregarDadosIniciais() {
         viewModelScope.launch {
             try {
-                val perguntasDoBanco = repositorio.buscarPerguntasMensais()
-                _uiState.update { estadoAtual ->
-                    estadoAtual.copy(carregando = false, perguntas = perguntasDoBanco)
+                val jaRespondeu = repositorio.verificarRespostaMesAtual()
+                if (jaRespondeu) {
+                    _uiState.update { it.copy(carregando = false, jaRespondeuEsteMes = true) }
+                } else {
+                    val perguntasDoBanco = repositorio.buscarPerguntasMensais()
+                    _uiState.update { estadoAtual ->
+                        estadoAtual.copy(carregando = false, perguntas = perguntasDoBanco)
+                    }
                 }
             } catch (e: Exception) {
-                _uiState.update { it.copy(carregando = false, erro = "Falha ao carregar perguntas.") }
+                _uiState.update { it.copy(carregando = false, erro = "Falha ao carregar dados.") }
             }
         }
     }

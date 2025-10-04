@@ -1,4 +1,4 @@
-package br.com.fiap.fineduca.screens
+package br.com.fiap.softtech.screens
 
 import android.app.Activity
 import android.content.Intent
@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -31,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import java.util.jar.Manifest
 
 @Composable
 fun ApoioScreen(modifier: Modifier = Modifier, navController: NavController) {

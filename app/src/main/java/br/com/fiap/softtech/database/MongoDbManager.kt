@@ -9,10 +9,15 @@ import org.bson.codecs.configuration.CodecRegistries
 import org.bson.codecs.pojo.PojoCodecProvider
 
 object MongoDbManager {
-    private const val CONNECTION_STRING = "mongodb://192.168.10.15:27017"
+    // O endereço 10.0.2.2 é um alias especial que, de dentro do emulador Android,
+    // aponta para o localhost (127.0.0.1) do computador host.
+    // Isso garante que o app no emulador consiga se conectar ao container Docker.
+    //CASO NAO FUNCIONE, BASTA INSERIR O SEU IP NO LUGAR DE 10.0.2.2, FICANDO POR EXMEPLO 192.168.00.00:27017
+    private const val CONNECTION_STRING = "mongodb://10.0.2.2:27017"
+    // ----------------------------------
+
     private const val DATABASE_NAME = "saude_mental_db"
 
-    // Configuração para permitir que o driver MongoDB use nossas Data Classes
     private val pojoCodecRegistry = CodecRegistries.fromRegistries(
         MongoClientSettings.getDefaultCodecRegistry(),
         CodecRegistries.fromProviders(

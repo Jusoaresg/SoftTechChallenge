@@ -1,4 +1,4 @@
-package br.com.fiap.fineduca.screens // ou br.com.fiap.softtech.screens
+package br.com.fiap.softtech.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.fiap.softtech.database.SaudeRepository
-import br.com.fiap.softtech.screens.PerguntaCard
 import br.com.fiap.softtech.viewmodel.DiarioHumorViewModel
 import br.com.fiap.softtech.viewmodel.DiarioHumorViewModelFactory
 
@@ -104,5 +103,3 @@ fun DiarioHumorScreen(modifier: Modifier = Modifier, navController: NavControlle
         }
     }
 }
-// NOTA: A sua função PerguntaCard() pode ser reutilizada aqui sem nenhuma alteração.
-// Certifique-se de que ela esteja acessível a partir deste arquivo.

@@ -4,29 +4,25 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import br.com.fiap.softtech.R
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.windowInsetsPadding
+
 
 
 sealed class BottomNavItem(val title: String, val icon: Int, val route: String) {
-
     object Home : BottomNavItem("Início", R.drawable.home, "home")
     object Evolution : BottomNavItem("Evolução", R.drawable.evolucao, "evolucao")
-    object Questionnaire : BottomNavItem("Questionário", R.drawable.questionario, "questionario")
+    object Questionnaire : BottomNavItem("Questionário", R.drawable.questionario, "questionario_mensal")
     object Support : BottomNavItem("Apoio", R.drawable.apoio, "apoio")
 }
 
@@ -43,7 +39,7 @@ fun BottomNavigationBar(
     )
 
     NavigationBar(
-        containerColor = Color.White
+        containerColor = Color.White,
     ) {
         items.forEach { item ->
             NavigationBarItem(
